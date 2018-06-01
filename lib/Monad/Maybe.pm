@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use utf8;
 use feature 'state';
+use Exporter;
+our @EXPORT_OK = qw/just nothing/;
 use Mouse;
 with 'Monad';
 
@@ -11,16 +13,17 @@ has _value => (
     is  => 'ro'
 );
 
+
 #------ Functions ------#
+
+sub just {
+    my $value = shift;
+    Monad::Maybe->new(_value => $value);
+}
 
 sub unit {
     my ($class, $value) = @_;
-    Monad::Maybe->just($value);
-}
-
-sub just {
-    my ($class, $value) = @_;
-    Monad::Maybe->new(_value => $value);
+    just($value);
 }
 
 sub nothing () {
@@ -36,7 +39,7 @@ sub is_nothing {
 sub map {
     my ($self, $f) = @_;
     return $self if $self->is_nothing;
-    Monad::Maybe->just($f->($self->{_value}));
+    just($f->($self->{_value}));
 }
 
 sub flatmap {
