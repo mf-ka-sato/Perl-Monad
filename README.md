@@ -21,7 +21,7 @@ use Monad::Maybe qw/just nothing/;
 sub add10 { $_[0] + 10 }
 
 (just 30)->map(\&add10);  # -> just 40
-noting->map(\&add10);     # -> nothing
+nothing->map(\&add10);     # -> nothing
 ```
 
 ## flatmap
