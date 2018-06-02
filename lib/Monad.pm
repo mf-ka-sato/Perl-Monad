@@ -19,7 +19,6 @@ sub do_monad {
 
     while ((@arr != 0) && (my ($generator, $key) = (shift @arr, shift @arr))) {
         my $old_f = $f;
-        my $generate_and_set = sub { $_->{$key} = $generator->() };
         $f = sub { $generator->()->flatmap(sub { $_->{$key} = shift; $old_f->(); }) }
     }
 
