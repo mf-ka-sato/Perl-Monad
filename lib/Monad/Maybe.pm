@@ -3,8 +3,8 @@ use strict;
 use warnings;
 use utf8;
 use feature 'state';
-use Exporter;
-our @EXPORT_OK = qw/just nothing/;
+use Exporter 'import';
+our @EXPORT_OK = qw/just nothing to_maybe/;
 use Mouse;
 with 'Monad';
 
@@ -21,14 +21,24 @@ sub just {
     Monad::Maybe->new(_value => $value);
 }
 
-sub unit {
-    my ($class, $value) = @_;
-    just($value);
-}
-
 sub nothing () {
     state $nothing = Monad::Maybe->new;
     return $nothing;
+}
+
+sub to_maybe (&) {
+    my $f = shift;
+    my $result;
+    eval { $result = $f->(); };
+
+    $@ ? nothing : just($result);
+}
+
+#------ Methods ------#
+
+sub unit {
+    my ($class, $value) = @_;
+    just($value);
 }
 
 sub is_nothing {
