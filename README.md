@@ -52,6 +52,7 @@ nothing->flatmap(sub { safe_divide(shift,  0) });     # -> nothing
 `Haskell`の`do`に相当します(これは関数です)。
 以下のように使います。
 ```perl
+use Monad qw/do_monad/;
 use Monad::Maybe qw/just nothing to_maybe/;
 
 sub safe_divide {
