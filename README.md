@@ -60,10 +60,10 @@ sub safe_divide {
   to_maybe { $x / $y };
 }
 
-my $result1 = do_monad 'Monad::Maybe' => (
-  x => sub { safe_divide(100, 20) },    # -> just 5 
-  y => sub { safe_divide(200, 10) },    # -> just 20
-  sub { $_->{x} + $_->{y} }             # -> $_->{XXX}はXXX => sub { ... }に対応
+my $result1 = do_monad 'Monad::Maybe' => (      # $_->{monad} <- 'Monad::Maybe'
+  x => sub { safe_divide(100, 20) },            # $_->{x} <- just 5 
+  y => sub { safe_divide(200, 10) },            # $_->{y} <- just 20
+  sub { $_->{monad}->unit($_->{x} + $_->{y}) }  # -> just 25
 );
 
 # 上のdo_monadは、以下の動作と同じ
