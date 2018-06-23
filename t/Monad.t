@@ -15,7 +15,7 @@ subtest 'chain maybe' => sub {
     my $result = do_monad 'Monad::Maybe' => (
         x => sub { safety_divide(100, 10) },
         y => sub { safety_divide(100, 2) },
-        sub { $_->{x} + $_->{y} }
+        sub { $_->{monad}->unit($_->{x} + $_->{y}) }
     );
 
     ok not $result->is_nothing;
@@ -28,7 +28,7 @@ subtest 'not chain maybe' => sub {
         x => sub { safety_divide(100, 20) },
         y => sub { safety_divide(200, 0) },
         z => sub { $z_called++; safety_divide(100, 40) },
-        sub { $_->{x} + $_->{y} }
+        sub { $_->{monad}->unit($_->{x} + $_->{y}) }
     );
 
     ok $result->is_nothing;

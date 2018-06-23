@@ -10,10 +10,12 @@ requires qw/unit map flatmap/;
 
 sub do_monad {
     my ($monad, @arr) = @_;
-    local $_ = {};
+    local $_ = {
+        monad => $monad
+    };
 
     my $tmp_f = pop @arr;
-    my $f = sub { $monad->unit($tmp_f->()) };
+    my $f = $tmp_f;
 
     @arr = reverse @arr;
 
